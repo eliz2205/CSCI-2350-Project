@@ -1,16 +1,19 @@
+#include "Employee.h"
+#include <string>
+
 #ifndef SALARY_H
 #define SALARY_H
 
-
-class Salary
+class Salary : public virtual Employee
 {
-    public:
-        Salary();
-        virtual ~Salary();
+private:
+    int basePay;
 
-    protected:
+public:
+    Salary(string, int, int);
+    ~Salary();
 
-    private:
+    void calculatePayroll();
 };
 
 #endif // SALARY_H
