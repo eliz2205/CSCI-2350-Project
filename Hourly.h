@@ -1,16 +1,20 @@
+#include "Employee.h"
+#include <string>
+
 #ifndef HOURLY_H
 #define HOURLY_H
 
-
-class Hourly
+class Hourly : public virtual Employee
 {
-    public:
-        Hourly();
-        virtual ~Hourly();
+private:
+    double payRate;
+    int hours;
 
-    protected:
+public:
+    Hourly(int, double, string);
+    ~Hourly();
 
-    private:
+    void calculatePayroll();
 };
 
 #endif // HOURLY_H
