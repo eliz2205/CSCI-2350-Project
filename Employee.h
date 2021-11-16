@@ -17,8 +17,12 @@ private:
 public:
     virtual void calculatePayroll() = 0;
     
-    void printPaycheck() { cout << payAmount << endl; }
+    void toString() { cout << payAmount << endl; } // add fields
     
 };
 
 #endif
+
+/*
+create a factory class
+*/
