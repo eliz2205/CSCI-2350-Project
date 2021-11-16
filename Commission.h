@@ -1,16 +1,22 @@
 #ifndef COMMISSION_H
 #define COMMISSION_H
 
+#include "Employee.h"
 
-class Commission
+class Commission : public virtual Employee
 {
-    public:
-        Commission();
-        virtual ~Commission();
+private:
+    double salesPct;
+    double sales;
 
-    protected:
+public:
+    Commission(string, double, double);
+    ~Commission();
 
-    private:
+    void calculatePayroll();
 };
 
-#endif // COMMISSION_H
+#endif
+// toString: type id name, need constructor for each type that takes string as parameter
+// handle names with multiple spaces/middle names
+// need getID function in each object to return ID
