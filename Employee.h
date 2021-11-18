@@ -1,8 +1,8 @@
-#ifndef EMPLOYEE_H
-#define EMPLOYEE_H
-
 #include <string>
 #include <iostream>
+
+#ifndef EMPLOYEE_H
+#define EMPLOYEE_H
 
 using namespace std;
 
@@ -13,16 +13,17 @@ private:
     string name;
     string payType;
     double payAmount;
+    int startDate = -1;
+    int endDate = -1;
 
 public:
+    Employee();
+    ~Employee();
+    
     virtual void calculatePayroll() = 0;
     
-    void toString() { cout << payAmount << endl; } // add fields
+    virtual void toString() = 0;
     
 };
 
 #endif
-
-/*
-create a factory class
-*/
