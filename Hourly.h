@@ -9,10 +9,14 @@ class Hourly : public virtual Employee
 private:
     double payRate;
     int hours;
+    int lastDayWorked;
 
 public:
-    Hourly(int, double, string);
+    // ID, payRate, name, hireDate, endDate
+    Hourly(int, double, string, int, int);
     ~Hourly();
+    
+    void addHours(int);
 
     void calculatePayroll();
 };
