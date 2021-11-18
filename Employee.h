@@ -8,7 +8,7 @@ using namespace std;
 
 class Employee
 {
-private:
+protected:
     int id;
     string name;
     string payType;
