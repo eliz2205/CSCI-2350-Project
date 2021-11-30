@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// todo : switch order to match his order
+
 Employee* EmployeeFactory::buildEmployee(string str, int date)
 {
     // comma delimited
@@ -71,9 +73,6 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
         return nullptr;
     }
 }
-
-
-
 
 
 

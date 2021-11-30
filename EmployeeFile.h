@@ -31,8 +31,8 @@ private:
 			if (data == nullptr)
 			{
 				data = e;
-				left = new EmployeeTree;
-				right = new EmployeeTree;
+				left = new EmployeeTree();
+				right = new EmployeeTree();
 			}
 			else if (e->getId() < data->getId())
 			{

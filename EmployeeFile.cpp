@@ -36,10 +36,12 @@ void EmployeeFile::loadTree()
 {
 	string employeeData = "";
 
+    if (eof()) insert(nullptr);
+
 	while (!eof())
 	{
 		std::getline(*this, employeeData);
-		Employee* item = EmployeeFactory::buildEmployee(employeeData);
+		Employee* item = EmployeeFactory::insertEmployee(employeeData);
 		insert(item);
 	}
 }

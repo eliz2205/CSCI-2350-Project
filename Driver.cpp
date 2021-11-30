@@ -8,6 +8,7 @@
 #include "Piecework.h"
 #include "EmployeeFactory.h"
 
+
 using namespace std;
 
 int main()
@@ -26,6 +27,7 @@ int main()
     string line;
     string firstWord;
     int date = 0; // todo : should date be a pointer?
+    
     
     do 
     {

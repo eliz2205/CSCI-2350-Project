@@ -1,0 +1,9 @@
+1
+hire,salary,3001,3950.00,Fred Flintstone
+hire,hourly,6002,24.50,Max Verstappen
+hire,piecework,9003,.75,James T. Kirk
+hire,commission,2004,.03,Brandon Ellis
+hours,6002,8.0
+pieces,9003,283
+sales,2004,13284.00
+termination,3001
