@@ -1,29 +1,30 @@
-#include <string>
-#include <iostream>
-
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
+
+#include <string>
+#include <iostream>
 
 using namespace std;
 
 class Employee
-{
+{	
 protected:
-    int id;
-    string name;
-    string payType;
-    double payAmount;
-    int startDate = -1;
-    int endDate = -1;
+	string employeeType;
+	int id;
+	double payRate;
+	string name;
+	double payAmount;
+	bool terminated;
 
 public:
-    Employee();
-    ~Employee();
-    
-    virtual void calculatePayroll() = 0;
-    
-    virtual void toString() = 0;
-    
+	virtual void calculatePayroll(int, double) = 0;
+
+	virtual string toString() = 0;
+
+	int getId()
+	{
+		return id;
+	}
 };
 
 #endif

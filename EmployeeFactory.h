@@ -1,8 +1,16 @@
+
+
+#ifndef EMPLOYEEFACTORY_H
+#define EMPLOYEEFACTORY_H
+
+#include "Employee.h"
 #include <string>
 
 class EmployeeFactory
 {
 public:
-  EmployeeFactory(string);
-  ~EmployeeFactory();
+    // line: ID, type, payRate, name
+    static Employee* buildEmployee(string, int);
 };
+
+#endif

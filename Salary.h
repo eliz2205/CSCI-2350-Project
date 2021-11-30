@@ -1,19 +1,26 @@
-#include "Employee.h"
-#include <string>
+
 
 #ifndef SALARY_H
 #define SALARY_H
 
-class Salary : public virtual Employee
+#include "Employee.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+class Salary : public Employee
 {
 private:
-    int basePay;
-
+	int firstDay;
+	int lastDay;
 public:
-    Salary(string, int, int);
-    ~Salary();
+	//type, id, payRate, name
+	Salary(string, int, double, string, int, int);
+	~Salary();
 
-    void calculatePayroll();
+	void calculatePayroll(int, double);
+	string toString();
 };
 
-#endif // SALARY_H
+#endif

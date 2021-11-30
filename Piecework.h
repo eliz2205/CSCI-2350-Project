@@ -1,16 +1,23 @@
+
+
 #ifndef PIECEWORK_H
 #define PIECEWORK_H
 
+#include "Employee.h"
+#include <string>
+#include <iostream>
 
-class Piecework
+using namespace std;
+
+class Piecework : public Employee
 {
-    public:
-        Piecework();
-        virtual ~Piecework();
+public:
+	//type, id, payRate, name
+	Piecework(string, int, double, string);
+	~Piecework();
 
-    protected:
-
-    private:
+	void calculatePayroll(int, double);
+	string toString();
 };
 
-#endif // PIECEWORK_H
+#endif

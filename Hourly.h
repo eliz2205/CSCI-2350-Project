@@ -1,24 +1,26 @@
-#include "Employee.h"
-#include <string>
+
 
 #ifndef HOURLY_H
 #define HOURLY_H
 
-class Hourly : public virtual Employee
+#include "Employee.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+class Hourly : public Employee
 {
 private:
-    double payRate;
-    int hours;
-    int lastDayWorked;
-
+	int lastDayWorked;
+	int numConsecutive;
 public:
-    // ID, payRate, name, hireDate, endDate
-    Hourly(int, double, string, int, int);
-    ~Hourly();
-    
-    void addHours(int);
+	//type, id, payRate, name, lastDayWOrked, numConsecutive
+	Hourly(string, int, double, string, int, int);
+	~Hourly();
 
-    void calculatePayroll();
+	void calculatePayroll(int, double);
+	string toString();
 };
 
-#endif // HOURLY_H
+#endif
