@@ -10,4 +10,5 @@ Presentation:
 - Executable
 - Source code
 - Demo of System
-- individual eval
+- self evaluation
+- team evaluation
