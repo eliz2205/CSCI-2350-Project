@@ -19,6 +19,7 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
 {
     // comma delimited
     // line format: type,id,payRate,payAmount,name
+	// id, name, type, payrate 
     // todo : add DailyTransaction files as dependencies in makefile
 
     // Declare dfields
@@ -30,20 +31,20 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
 
     // todo : make less repetitive ? 
 
-    // get EmpType
-    empType = str.substr(0, str.find(","));
+    // get id
+    id = stoi(str.substr(0, str.find(",")));
     remainder = str.substr(str.find(",") + 1);
+
+	// get name
+	name = remainder.substr(0, remainder.find(","));
+    remainder = remainder.substr(remainder.find(",") + 1);
  
-    // get ID
-    id = stoi(remainder.substr(0, remainder.find(",")));
+    // get empType
+    empType = remainder.substr(0, remainder.find(","));
     remainder = remainder.substr(remainder.find(",") + 1);
     
     // get payrate
-    payRate = stod(remainder.substr(0, remainder.find(",")));
-    remainder = remainder.substr(remainder.find(",") + 1);
-
-    // get name
-    name = remainder;
+    payRate = stod(remainder);
 
     if (empType == "hourly")
     {
@@ -59,8 +60,11 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
 
     else if (empType == "salary")
     {
+        // todo : do salary payroll calculation
+        Employee* e = new Salary(empType, id, payRate, name, date, -1);
+        e->calculatePayroll(date, -1);
         // string employeeType, int id, double payRate, string name, int firstDay, int lastDay
-        return new Salary(empType, id, payRate, name, date, -1);
+        return e;
     }
 
     else if (empType == "commission")

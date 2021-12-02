@@ -46,6 +46,7 @@ int main()
 
         else if (userInput == "2")
         {
+            //todo: change range
             for (int date = 1; date < 2; ++date)
             {
                 // Find relevant file for today's date
@@ -67,15 +68,12 @@ int main()
 
                     if (firstWord == "hire")
                     {
+                        if(!isValidInput(line))
+                        {
+							continue;
+                        }
                         // call buildEmployee
                         e = EmployeeFactory::buildEmployee(line, date);
-
-                        // todo : maybe call this in the constructor of salary?
-
-                        if (e->getType() == "salary")
-                        {
-                            e->calculatePayroll(date, -1);
-                        }
                         
                         // put employee into binary search tree
                         bst->insert(e);
@@ -102,8 +100,13 @@ int main()
 
                         if (e->getType() == "salary")
                         {
-                            e->calculatePayroll(date, date);
+                            e->calculatePayroll(date, date); // todo : redundant
                         }
+                    }
+
+                    else
+                    {
+                        // make an error log
                     }
                 }
             }
@@ -119,6 +122,53 @@ int main()
     delete bst;
 
     return 0;
+}
 
+/**
+ * Returns true if valid input for building employee.
+ * False otherwise.
+**/
+bool isValidInput(string line)
+{
+
+	bool isValid = true;
+    // get id
+    id = stoi(str.substr(0, str.find(",")));
+    remainder = str.substr(str.find(",") + 1);
+
+	// get name
+	name = remainder.substr(0, remainder.find(","));
+    remainder = remainder.substr(remainder.find(",") + 1);
+ 
+    // get empType
+    empType = remainder.substr(0, remainder.find(","));
+    remainder = remainder.substr(remainder.find(",") + 1);
+    
+    // get payrate
+    payRate = stod(remainder);
+
+	//write to error log
+	if(empType == "salary")
+	{
+		if(!(payRate >= 4000))
+		{
+			isValid = false;
+			//write to errorlog
+		}
+	}
+	else if(empType == "hourly")
+	{
+		return (payRate >= 10 && payRate <= 26);
+	}
+	else if(empType == "piecework")
+	{
+		return (payRate >= 0 && payRate <= 1);
+	}
+	else if(empType == "commission")
+	{
+		return (payRate >= .03 && payRate <= .05);
+	}
+
+	return false;
 
 }
