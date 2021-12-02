@@ -21,10 +21,13 @@ public:
 
 	virtual string toString() = 0;
 
-	int getId()
-	{
-		return id;
-	}
+	int getId() { return id; }
+
+    string getType() { return employeeType; }
+
+    void setPayAmount(double amt) { payAmount = amt; }
+
+    void setTerminated(int status) { terminated = status; }
 };
 
 #endif

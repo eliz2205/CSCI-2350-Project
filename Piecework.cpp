@@ -33,7 +33,7 @@ void Piecework::calculatePayroll(int day, double pieces)
 string Piecework::toString()
 {
 	string fields = "";
-	fields += "SALES " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
+	fields += "piecework " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
 
 	if(terminated)
 	{

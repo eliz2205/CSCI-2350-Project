@@ -7,28 +7,30 @@
 #include "Hourly.h"
 #include "Piecework.h"
 #include "EmployeeFactory.h"
+#include "EmployeeFile.h"
 
+// todo : make sure you can't hire duplicates?
+// todo : employeefile can't have extra line at end or else a runtime error occurs - fix this in employeefile.cpp
+// todo check for memory leaks or dangling pointers 
 
 using namespace std;
 
 int main()
 {
-    /*
-	//type, id, payRate, name
-	Employee* e1 = new Salary("SALARY", 1, 5000, "Ryan Lueder", 0, -1);
-	e1->calculatePayroll(15, 15);
-	cout << e1->toString() << endl;
-    */
-
-    // DATA
+    // fields
+    Employee* e;
     string userInput;
     ifstream fileIn;
     string filename;
     string line;
     string firstWord;
-    int date = 0; // todo : should date be a pointer?
-    
-    
+    int junk;
+    int id;
+    double quantity;
+
+    // create the empty bst from masterfile
+    EmployeeFile* bst = new EmployeeFile();
+
     do 
     {
         // print options to terminal
@@ -38,60 +40,69 @@ int main()
 
         if (userInput == "1")
         {
-            
+            // write to masterfile
+            bst->write();
         }
 
         else if (userInput == "2")
         {
-            // Increment date
-            date++;
-            
-            // Find relevant file for today's date
-            filename = "DailyTransaction/" + to_string(date) + "DailyTransaction.txt";
-
-            // Open file
-            fileIn.open(filename);
-
-            // Read in date of file
-            // todo : this is redundant, how will we know which file to open? / how does he want us to format the terminal?
-            fileIn >> date;
-
-            // Read file line by line
-            while (getline(fileIn, line))
+            for (int date = 1; date < 2; ++date)
             {
-                firstWord = line.substr(0, line.find(","));
+                // Find relevant file for today's date
+                filename = "DailyTransaction/" + to_string(date) + "DailyTransaction.txt";
 
-                //cout << line << endl;
+                // Open file
+                fileIn.open(filename);
 
-                if (firstWord == "hire")
+                // Read in date of file
+                fileIn >> junk;
+
+                // Read file line by line
+                while (getline(fileIn, line))
                 {
-                    // call buildEmployee
-                    Employee* e = EmployeeFactory::buildEmployee(line.substr(line.find(",") + 1), date);
+                    firstWord = line.substr(0, line.find(","));
+                    line = line.substr(line.find(",") +1);
 
-                    
-                    // put employee into binary search tree
-                    
-                    
-                }
-                else if (firstWord == "hours")
-                {
-                    // 
-                }
+                    //cout << line << endl;
 
-                else if (firstWord == "pieces")
-                {}
+                    if (firstWord == "hire")
+                    {
+                        // call buildEmployee
+                        e = EmployeeFactory::buildEmployee(line, date);
 
-                else if (firstWord == "sales")
-                {}
+                        if (e->getType() == "salary")
+                        {
+                            e->calculatePayroll(date, -1);
+                        }
+                        
+                        // put employee into binary search tree
+                        bst->insert(e);
+                        
+                    }
+                    else if (firstWord == "hours" || firstWord == "commission" || firstWord == "pieces")
+                    {
+                        // extract relevant info
+                        id = stoi(line.substr(0, line.find(",")));
+                        quantity = stod(line.substr(line.find(",") + 1));
 
-                else if (firstWord == "terminated")
-                {
-                    // locate the employee in the BST and set terminated = 1
-                }
+                        e = bst->getEmployee(id);
 
-                else
-                {
-                    continue; 
+                        // add hours
+                        e->calculatePayroll(date, quantity);
+                    }
+
+                    else if (firstWord == "termination")
+                    {
+                        id = stoi(line.substr(line.find(",") + 1));
+                        e = bst->getEmployee(id);
+                        cout << "fired: " << id << endl;
+                        e->setTerminated(1);
+
+                        if (e->getType() == "salary")
+                        {
+                            e->calculatePayroll(date, date);
+                        }
+                    }
                 }
             }
         }
@@ -103,6 +114,7 @@ int main()
 
     } while (userInput != "e");
 
+    delete bst;
 
     return 0;
 

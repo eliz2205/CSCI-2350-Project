@@ -1,11 +1,16 @@
 #include "EmployeeFile.h"
 #include "EmployeeFactory.h"
+//delete
+#include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
 EmployeeFile::EmployeeFile() : dataTree(new EmployeeTree)
 {
 	open("EmployeeFile.txt", ios_base::in);
+    
 	if (!fail())
 	{
 		loadTree();
@@ -19,6 +24,13 @@ EmployeeFile::~EmployeeFile()
 	dataTree->preOrderWrite(this);
 	close();
 	delete dataTree;
+}
+
+void EmployeeFile::write()
+{
+    open("EmployeeFile.txt", ios::out);
+    dataTree->preOrderWrite(this);
+    close();
 }
 
 void EmployeeFile::insert(Employee* e)
@@ -36,9 +48,9 @@ void EmployeeFile::loadTree()
 {
 	string employeeData = "";
 
-    if (eof()) insert(nullptr);
+    if (peek() == EOF) insert(nullptr);
 
-	while (!eof())
+	while (peek() != EOF)
 	{
 		std::getline(*this, employeeData);
 		Employee* item = EmployeeFactory::insertEmployee(employeeData);

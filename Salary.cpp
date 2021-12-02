@@ -27,25 +27,27 @@ Salary::~Salary()
 
 }
 
+// todo : check this calculation*** - should it be inclusive or exclusive? ie if soome1 hired then fired, what should it be
 void Salary::calculatePayroll(int day, double lastDay)
 {
-	this->lastDay = lastDay;
-	if(lastDay == -1)
-	{
-		this->firstDay = day;
-		payAmount = payRate * (30 - day) / 30;
-	}
-	else
-	{
-		payAmount = payRate * (lastDay - firstDay) / 30;
-	}
+    this->lastDay = lastDay;
+    if (lastDay == -1)
+    {
+        this->firstDay = day;
+        payAmount = payRate * (30 - day + 1) / 30;
+    }
+
+    else
+    {
+        payAmount = payRate * (lastDay - firstDay + 1) / 30;
+    }
 }
 
 //SALARY  [id] [payRate] [payAmount] [terminated] [name]
 string Salary::toString()
 {
 	string fields = "";
-	fields += "SALES " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
+	fields += "salary " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
 
 	if(terminated)
 	{

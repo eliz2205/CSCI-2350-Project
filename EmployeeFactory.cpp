@@ -1,5 +1,3 @@
-// RUNTIME ERROR
-
 #include "Employee.h"
 #include "EmployeeFactory.h"
 #include <string>
@@ -7,12 +5,15 @@
 #include "Hourly.h"
 #include "Piecework.h"
 #include "Salary.h"
+#include "Commission.h"
 
 using namespace std;
 
 // todo : if time, make less repetetive
 
 // todo : switch order to match his order
+
+// todo : rename methods to make it clear that buildEmployee is for daily and insertEmployee is for master
 
 Employee* EmployeeFactory::buildEmployee(string str, int date)
 {
@@ -34,17 +35,14 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
     remainder = str.substr(str.find(",") + 1);
  
     // get ID
-    id = stoi(remainder.substr(0, str.find(",")));
+    id = stoi(remainder.substr(0, remainder.find(",")));
     remainder = remainder.substr(remainder.find(",") + 1);
-    
-    cout << "ID: " << id << endl;
     
     // get payrate
     payRate = stod(remainder.substr(0, remainder.find(",")));
     remainder = remainder.substr(remainder.find(",") + 1);
-    
+
     // get name
-    
     name = remainder;
 
     if (empType == "hourly")
@@ -67,8 +65,8 @@ Employee* EmployeeFactory::buildEmployee(string str, int date)
 
     else if (empType == "commission")
     {
-        // todo : write commission and return new commission employee
-        return nullptr;
+        // string employeeType, int id, double payRate, string name
+        return new Commission(empType, id, payRate, name);
     }
 
     else
@@ -92,14 +90,17 @@ Employee* EmployeeFactory::insertEmployee(string str)
     string name;
     string remainder;
     int numConsecutive = -1;
+    Employee* e;
 
     // get EmpType
     empType = str.substr(0, str.find(" "));
     remainder = str.substr(str.find(" ") + 1);
+
+
     
     // get id
-    id = stoi(remainder.substr(0, str.find(" ")));
-    remainder = remainder.substr(str.find(" ") + 1);
+    id = stoi(remainder.substr(0, remainder.find(" ")));
+    remainder = remainder.substr(remainder.find(" ") + 1);
     
     // get payrate
     payRate = stod(remainder.substr(0, remainder.find(" ")));
@@ -113,6 +114,8 @@ Employee* EmployeeFactory::insertEmployee(string str)
     terminated = stoi(remainder.substr(0, remainder.find(" ")));
     remainder = remainder.substr(remainder.find(" ") + 1);
 
+    
+
     if (empType == "hourly")
     {
         numConsecutive = stoi(remainder.substr(0, remainder.find(" ")));
@@ -121,30 +124,38 @@ Employee* EmployeeFactory::insertEmployee(string str)
     
     name = remainder;
     
+    
     if (empType == "hourly")
     {
        //type, id, payRate, name, lastDayWOrked, numConsecutive
-        return new Hourly(empType, id, payRate, name, -1, numConsecutive);
+        e = new Hourly(empType, id, payRate, name, -1, numConsecutive);
     }
 
     else if (empType == "piecework")
     {
         // string employeeType, int id, double payRate, string name
-        return new Piecework(empType, id, payRate, name);
+        e = new Piecework(empType, id, payRate, name);
     }
 
     else if (empType == "commission")
     {
-        return nullptr;
+        // string employeeType, int id, double payRate, string name
+        e = new Commission(empType, id, payRate, name);
     }
 
     else if (empType == "salary")
     {
         // string employeeType, int id, double payRate, string name, int firstDay, int lastDay
-        return new Salary(empType, id, payRate, name, date, -1);
+        e = new Salary(empType, id, payRate, name, date, -1);
     }
 
+    e->setPayAmount(payAmount);
+    e->setTerminated(terminated);
+
+    return e;
+
 }
+
 
 
 

@@ -11,6 +11,8 @@ class EmployeeFactory
 public:
     // line: ID, type, payRate, name
     static Employee* buildEmployee(string, int);
+
+    static Employee* insertEmployee(string);
 };
 
 #endif

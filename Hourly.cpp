@@ -55,7 +55,7 @@ void Hourly::calculatePayroll(int day, double hours)
 string Hourly::toString()
 {
 	string fields = "";
-	fields += "SALES " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
+	fields += "hourly " + to_string(id) + " " + to_string(payRate) + " " + to_string(payAmount) + " ";
 
 	if(terminated)
 	{

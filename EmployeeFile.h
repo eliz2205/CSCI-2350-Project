@@ -69,13 +69,16 @@ private:
 		void preOrderWrite(fstream* f)
 		{
 			*f << data->toString() << endl;
-			if (left != nullptr)
+            
+			if (left->data != nullptr)
 			{
 				left->preOrderWrite(f);
+                
 			}
-			if (right != nullptr)
+			if (right->data != nullptr)
 			{
 				right->preOrderWrite(f);
+                
 			}
 		}
 	};
@@ -87,6 +90,7 @@ public:
 	~EmployeeFile();
 	void insert(Employee*);
 	Employee* getEmployee(int);
+    void write();
 
 private:
 	void loadTree();
