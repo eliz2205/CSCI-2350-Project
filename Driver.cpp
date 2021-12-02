@@ -70,6 +70,8 @@ int main()
                         // call buildEmployee
                         e = EmployeeFactory::buildEmployee(line, date);
 
+                        // todo : maybe call this in the constructor of salary?
+
                         if (e->getType() == "salary")
                         {
                             e->calculatePayroll(date, -1);
