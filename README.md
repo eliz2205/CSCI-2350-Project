@@ -6,7 +6,8 @@ To do:
 - Fix format of DailyTransactionFile to match his format
 
 Presentation:
-What everyone did
-Executable
-Source code
-Demo of System
+- What everyone did (word doc)
+- Executable
+- Source code
+- Demo of System
+- individual eval
