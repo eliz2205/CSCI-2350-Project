@@ -74,12 +74,17 @@ int main()
 
                     if (firstWord == "hire")
                     {
-                        if(!isValidInput(line))
-                        {
+
+						try 
+						{ 
+							e = EmployeeFactory::buildEmployee(line, date);
+						}
+						catch (int e)
+						{
+							// WRITE TO ERROR LOG W/ LINE NUMBER -> Can also check int e for type of error
+							// TODO : add general exception?
 							continue;
-                        }
-                        // call buildEmployee
-                        e = EmployeeFactory::buildEmployee(line, date);
+						}
                         
                         // put employee into binary search tree
                         bst->insert(e);
