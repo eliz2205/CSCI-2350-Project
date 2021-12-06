@@ -9,158 +9,133 @@
 
 using namespace std;
 
-// todo : if time, make less repetetive
-
-// todo : switch order to match his order
-
-// todo : rename methods to make it clear that buildEmployee is for daily and insertEmployee is for master
-
-Employee* EmployeeFactory::buildEmployee(string str, int date)
+int parseInt(string delimiter)
 {
-    // comma delimited
-    // line format: type,id,payRate,payAmount,name
-	// id, name, type, payrate 
-    // todo : add DailyTransaction files as dependencies in makefile
+	int a = stoi(myStr.substr(0, myStr.find(delimiter)));
+	advance(delimiter);
+	return a;
+}
 
-    // Declare dfields
-    int id;
-    string empType;
-    double payRate;
-    string name;
-    string remainder;
+double parseDouble(string delimiter)
+{
+	double a = stod(myStr.substr(0, myStr.find(delimiter)));
+	advance(delimiter);
+	return a;
+}
 
-    // todo : make less repetitive ? 
+string parseString(string delimiter)
+{
+	string a = myStr.substr(0, myStr.find(delimiter));
+	advance(delimiter);
+	return a;
+}
 
-    // get id
-    id = stoi(str.substr(0, str.find(",")));
-    remainder = str.substr(str.find(",") + 1);
-
-	// get name
-	name = remainder.substr(0, remainder.find(","));
-    remainder = remainder.substr(remainder.find(",") + 1);
- 
-    // get empType
-    empType = remainder.substr(0, remainder.find(","));
-    remainder = remainder.substr(remainder.find(",") + 1);
-    
-    // get payrate
-    payRate = stod(remainder);
-
-    if (empType == "hourly")
-    {
-        //type, id, payRate, name, lastDayWOrked, numConsecutive
-        return new Hourly(empType, id, payRate, name, date, 1);
-    }
-
-    else if (empType == "piecework")
-    {
-        // string employeeType, int id, double payRate, string name
-        return new Piecework(empType, id, payRate, name);
-    }
-
-    else if (empType == "salary")
-    {
-        // todo : do salary payroll calculation
-        Employee* e = new Salary(empType, id, payRate, name, date, -1);
-        e->calculatePayroll(date, -1);
-        // string employeeType, int id, double payRate, string name, int firstDay, int lastDay
-        return e;
-    }
-
-    else if (empType == "commission")
-    {
-        // string employeeType, int id, double payRate, string name
-        return new Commission(empType, id, payRate, name);
-    }
-
-    else
-    {
-        return nullptr;
-    }
+void advance(delimiter)
+{
+	myStr = myStr.substr(myStr.find(delimiter) + 1);
 }
 
 
+Employee* constructEmployee(int id, string name, string type, double payRate, double payAmount, bool terminated, int numConsecutive, int date)
+{
+	Employee* e;
+	int exception = 10;
 
-Employee* EmployeeFactory::insertEmployee(string str)
+	switch (empType)
+	{
+		case "hourly":
+			if (payRate < 10 || payRate > 26)
+			{
+				throw exception;
+			}
+
+        	e = new Hourly(empType, id, payRate, name, date, numConsecutive);
+
+			break;
+
+		case "piecework":
+			if (payRate < 0 || payRate > 1)
+			{
+				throw 10;
+			}
+
+		    e = new Piecework(empType, id, payRate, name);
+
+			break;
+
+		case "salary":
+			if(!(payRate >= 4000))
+			{
+				throw 10;
+			}
+		    e = new Salary(empType, id, payRate, name, date, -1);
+
+			if (!terminated) e->calculatePayroll(date, -1);
+
+		    break;
+
+		case "commission":
+
+			if (payRate < .03 || payRate > .05)
+			{
+				throw 10;
+			}
+		    e = new Commission(empType, id, payRate, name);
+
+			break;
+		
+		case default:
+			throw 11;
+	}
+
+	e->setTerminated(terminated);
+	if (payAmount != -1) e->setPayAmount(payAmount);
+
+	return e;
+}
+
+
+Employee* EmployeeFactory::buildEmployeeFromDaily(string str, int date)
+{
+    // comma delimited
+    // line format: id, name, type, payRate
+    // todo : add DailyTransaction files as dependencies in makefile
+
+	myStr = str;
+
+    int id = parseInt(",");
+	string name = parseString(",");
+    string empType = parseString(",");
+    double payRate = stod(myStr)
+
+	return constructEmployee(id, name, emptype, payRate, -1, 0, 1, date);
+}
+
+
+Employee* EmployeeFactory::buildEmployeeFromMaster(string str)
 {
     // space delimited
     // line format: TYPE id payRate payAmount terminated [numDaysWOrked] name
 
     // Declare dfields
-    int id, terminated, date;
-    string empType;
-    double payRate;
-    double payAmount;
-    string name;
-    string remainder;
-    int numConsecutive = -1;
-    Employee* e;
+	myStr = str;
+    int numConsecutive = 1;
 
-    // get EmpType
-    empType = str.substr(0, str.find(" "));
-    remainder = str.substr(str.find(" ") + 1);
-
-
-    
-    // get id
-    id = stoi(remainder.substr(0, remainder.find(" ")));
-    remainder = remainder.substr(remainder.find(" ") + 1);
-    
-    // get payrate
-    payRate = stod(remainder.substr(0, remainder.find(" ")));
-    remainder = remainder.substr(remainder.find(" ") + 1);
-
-    // get payAmount
-    payAmount = stod(remainder.substr(0, remainder.find(" ")));
-    remainder = remainder.substr(remainder.find(" ") + 1);
-    
-    // get terminated
-    terminated = stoi(remainder.substr(0, remainder.find(" ")));
-    remainder = remainder.substr(remainder.find(" ") + 1);
-
-    
+    string empType = parseString(" ");
+    int id = parseInt(" ");
+    double payRate = parseDouble(" ");
+    double payAmount = parseDouble(" ");
+    int terminated = parseInt(" ");
 
     if (empType == "hourly")
     {
-        numConsecutive = stoi(remainder.substr(0, remainder.find(" ")));
-        remainder = remainder.substr(remainder.find(" ") + 1);
+        numConsecutive = parseInt(" ");
     }
     
-    name = remainder;
-    
-    
-    if (empType == "hourly")
-    {
-       //type, id, payRate, name, lastDayWOrked, numConsecutive
-        e = new Hourly(empType, id, payRate, name, -1, numConsecutive);
-    }
+    name = myStr;
 
-    else if (empType == "piecework")
-    {
-        // string employeeType, int id, double payRate, string name
-        e = new Piecework(empType, id, payRate, name);
-    }
-
-    else if (empType == "commission")
-    {
-        // string employeeType, int id, double payRate, string name
-        e = new Commission(empType, id, payRate, name);
-    }
-
-    else if (empType == "salary")
-    {
-        // string employeeType, int id, double payRate, string name, int firstDay, int lastDay
-        e = new Salary(empType, id, payRate, name, date, -1);
-    }
-
-    e->setPayAmount(payAmount);
-    e->setTerminated(terminated);
-
-    return e;
+    return constructEmployee(id, name, emptype, payRate, payAmount, terminated, numConsecutive, 1);
 
 }
-
-
-
 
 

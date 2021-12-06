@@ -8,6 +8,9 @@
 
 class EmployeeFactory
 {
+private:
+	string myStr;
+
 public:
     // line: ID, type, payRate, name
     static Employee* buildEmployee(string, int);

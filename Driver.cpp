@@ -27,9 +27,12 @@ int main()
     int junk;
     int id;
     double quantity;
+	int lineNumber = 0;
 
     // create the empty bst from masterfile
     EmployeeFile* bst = new EmployeeFile();
+
+	// TODO : change do while?
 
     do 
     {
@@ -49,13 +52,16 @@ int main()
             //todo: change range
             for (int date = 1; date < 2; ++date)
             {
+				lineNumber++; 
+
                 // Find relevant file for today's date
-                filename = "DailyTransaction/" + to_string(date) + "DailyTransaction.txt";
+                filename = "DailyTransaction/" + to_string(date) + ".txt";
 
                 // Open file
                 fileIn.open(filename);
 
                 // Read in date of file
+				// TODO : fix this
                 fileIn >> junk;
 
                 // Read file line by line
@@ -124,10 +130,12 @@ int main()
     return 0;
 }
 
+
 /**
  * Returns true if valid input for building employee.
  * False otherwise.
 **/
+/*
 bool isValidInput(string line)
 {
 
@@ -172,3 +180,4 @@ bool isValidInput(string line)
 	return false;
 
 }
+*/
