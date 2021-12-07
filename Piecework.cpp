@@ -16,7 +16,6 @@ Piecework::Piecework(string employeeType, int id, double payRate, string name)
 	this->payAmount = 0;
 	this->terminated = false;
 
-    cout << "In piecework" << endl;
 }
 
 Piecework::~Piecework()

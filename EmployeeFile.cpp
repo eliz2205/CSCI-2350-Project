@@ -1,6 +1,6 @@
 #include "EmployeeFile.h"
 #include "EmployeeFactory.h"
-//delete
+// TODO : delete
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -47,13 +47,20 @@ Employee* EmployeeFile::getEmployee(int id)
 void EmployeeFile::loadTree()
 {
 	string employeeData = "";
-
-    if (peek() == EOF) insert(nullptr);
+	// TODO 
+    //if (peek() == EOF) dataTree = new EmployeeTree();
 
 	while (peek() != EOF)
 	{
 		std::getline(*this, employeeData);
-		Employee* item = EmployeeFactory::insertEmployee(employeeData);
-		insert(item);
+		Employee* item = EmployeeFactory::buildEmployeeFromMaster(employeeData);
+		try
+		{
+			insert(item);
+		}
+		catch (int& e)
+		{
+			continue;
+		}
 	}
 }

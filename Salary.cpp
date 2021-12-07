@@ -18,8 +18,6 @@ Salary::Salary(string employeeType, int id, double payRate, string name, int fir
 
 	this->firstDay = firstDay;
 	this->lastDay = lastDay;
-
-    cout << "In salary" << endl;
 }
 
 Salary::~Salary()

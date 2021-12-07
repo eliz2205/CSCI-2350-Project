@@ -28,6 +28,9 @@ public:
     void setPayAmount(double amt) { payAmount = amt; }
 
     void setTerminated(int status) { terminated = status; }
+
+	virtual ~Employee() {};
+
 };
 
 #endif

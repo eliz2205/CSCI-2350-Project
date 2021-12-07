@@ -1,3 +1,4 @@
-hourly 3 8.900000 1000.000000 0 0 Employee Name
-salary 2 3.900000 10000.000000 1 Employee Name 2
-commission 4 3.000000 22222.000000 0 Employee Name 3
+commission 2004 0.030000 0.000000 0 Brandon Ellis
+salary 3001 4950.000000 4950.000000 0 Fred Flintstone
+hourly 6002 24.500000 588.000000 0 0 Max Verstappen
+piecework 9003 0.750000 0.000000 0 James T. Kirk

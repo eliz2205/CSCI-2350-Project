@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <exception>
 
 #include "Employee.h"
 #include "Salary.h"
@@ -8,10 +9,6 @@
 #include "Piecework.h"
 #include "EmployeeFactory.h"
 #include "EmployeeFile.h"
-
-// todo : make sure you can't hire duplicates?
-// todo : employeefile can't have extra line at end or else a runtime error occurs - fix this in employeefile.cpp
-// todo check for memory leaks or dangling pointers 
 
 using namespace std;
 
@@ -21,6 +18,7 @@ int main()
     Employee* e;
     string userInput;
     ifstream fileIn;
+	ofstream errorLog("errorlog.txt");
     string filename;
     string line;
     string firstWord;
@@ -50,14 +48,16 @@ int main()
         else if (userInput == "2")
         {
             //todo: change range
+
             for (int date = 1; date < 2; ++date)
             {
-				lineNumber++; 
+				lineNumber = 0;
 
                 // Find relevant file for today's date
-                filename = "DailyTransaction/" + to_string(date) + ".txt";
+                filename = "DailyTransaction/" + to_string(date) + "DailyTransaction.txt";
 
                 // Open file
+			
                 fileIn.open(filename);
 
                 // Read in date of file
@@ -67,6 +67,7 @@ int main()
                 // Read file line by line
                 while (getline(fileIn, line))
                 {
+					lineNumber++;
                     firstWord = line.substr(0, line.find(","));
                     line = line.substr(line.find(",") +1);
 
@@ -77,17 +78,29 @@ int main()
 
 						try 
 						{ 
-							e = EmployeeFactory::buildEmployee(line, date);
+							e = EmployeeFactory::buildEmployeeFromDaily(line, date);
 						}
-						catch (int e)
+						catch (int& e)
 						{
-							// WRITE TO ERROR LOG W/ LINE NUMBER -> Can also check int e for type of error
-							// TODO : add general exception?
+							errorLog << "Invalid input on line " << lineNumber << " In File " << filename << endl;
 							continue;
 						}
+
+						catch (exception& e)
+						{
+							errorLog << "General exception on line " << lineNumber << " In File " << filename << endl;
+							continue;
+						}
+
+						try
+						{
+							bst->insert(e);
+						}
+						catch (int& e)
+						{
+							errorLog << "duplicate employee on line " << lineNumber << " In File " << filename << endl;
+						}
                         
-                        // put employee into binary search tree
-                        bst->insert(e);
                         
                     }
                     else if (firstWord == "hours" || firstWord == "commission" || firstWord == "pieces")
@@ -106,20 +119,17 @@ int main()
                     {
                         id = stoi(line.substr(line.find(",") + 1));
                         e = bst->getEmployee(id);
-                        cout << "fired: " << id << endl;
                         e->setTerminated(1);
 
                         if (e->getType() == "salary")
                         {
-                            e->calculatePayroll(date, date); // todo : redundant
+                            e->calculatePayroll(date, date);
                         }
                     }
-
-                    else
-                    {
-                        // make an error log
-                    }
                 }
+
+				// Close file
+				fileIn.close();
             }
         }
 
@@ -135,54 +145,3 @@ int main()
     return 0;
 }
 
-
-/**
- * Returns true if valid input for building employee.
- * False otherwise.
-**/
-/*
-bool isValidInput(string line)
-{
-
-	bool isValid = true;
-    // get id
-    id = stoi(str.substr(0, str.find(",")));
-    remainder = str.substr(str.find(",") + 1);
-
-	// get name
-	name = remainder.substr(0, remainder.find(","));
-    remainder = remainder.substr(remainder.find(",") + 1);
- 
-    // get empType
-    empType = remainder.substr(0, remainder.find(","));
-    remainder = remainder.substr(remainder.find(",") + 1);
-    
-    // get payrate
-    payRate = stod(remainder);
-
-	//write to error log
-	if(empType == "salary")
-	{
-		if(!(payRate >= 4000))
-		{
-			isValid = false;
-			//write to errorlog
-		}
-	}
-	else if(empType == "hourly")
-	{
-		return (payRate >= 10 && payRate <= 26);
-	}
-	else if(empType == "piecework")
-	{
-		return (payRate >= 0 && payRate <= 1);
-	}
-	else if(empType == "commission")
-	{
-		return (payRate >= .03 && payRate <= .05);
-	}
-
-	return false;
-
-}
-*/

@@ -9,83 +9,71 @@
 
 using namespace std;
 
-int parseInt(string delimiter)
+int EmployeeFactory::parseInt(string delimiter, string myStr)
 {
 	int a = stoi(myStr.substr(0, myStr.find(delimiter)));
-	advance(delimiter);
+
 	return a;
 }
 
-double parseDouble(string delimiter)
+double EmployeeFactory::parseDouble(string delimiter, string myStr)
 {
 	double a = stod(myStr.substr(0, myStr.find(delimiter)));
-	advance(delimiter);
+
 	return a;
 }
 
-string parseString(string delimiter)
+string EmployeeFactory::parseString(string delimiter, string myStr)
 {
 	string a = myStr.substr(0, myStr.find(delimiter));
-	advance(delimiter);
+
 	return a;
 }
 
-void advance(delimiter)
+string EmployeeFactory::advance(string delimiter, string myStr)
 {
-	myStr = myStr.substr(myStr.find(delimiter) + 1);
+	return myStr.substr(myStr.find(delimiter) + 1);
 }
 
 
-Employee* constructEmployee(int id, string name, string type, double payRate, double payAmount, bool terminated, int numConsecutive, int date)
+Employee* EmployeeFactory::constructEmployee(int id, string name, string empType, double payRate, double payAmount, bool terminated, int numConsecutive, int date)
 {
 	Employee* e;
-	int exception = 10;
 
-	switch (empType)
+	if (empType == "hourly")
 	{
-		case "hourly":
-			if (payRate < 10 || payRate > 26)
-			{
-				throw exception;
-			}
+		if (payRate < 10 || payRate > 26) throw 10;
 
-        	e = new Hourly(empType, id, payRate, name, date, numConsecutive);
+        e = new Hourly(empType, id, payRate, name, date, numConsecutive);
+	}
 
-			break;
+	else if (empType == "piecework")
+	{
+		if (payRate < 0 || payRate > 1) throw 10;
 
-		case "piecework":
-			if (payRate < 0 || payRate > 1)
-			{
-				throw 10;
-			}
+		e = new Piecework(empType, id, payRate, name);
+	}
 
-		    e = new Piecework(empType, id, payRate, name);
+	else if (empType == "salary")
+	{
+		if(!(payRate >= 4000)) throw 10;
 
-			break;
-
-		case "salary":
-			if(!(payRate >= 4000))
-			{
-				throw 10;
-			}
-		    e = new Salary(empType, id, payRate, name, date, -1);
-
-			if (!terminated) e->calculatePayroll(date, -1);
-
-		    break;
-
-		case "commission":
-
-			if (payRate < .03 || payRate > .05)
-			{
-				throw 10;
-			}
-		    e = new Commission(empType, id, payRate, name);
-
-			break;
+		e = new Salary(empType, id, payRate, name, date, -1);
 		
-		case default:
-			throw 11;
+
+		if (!terminated) e->calculatePayroll(date, -1);
+	}
+
+	else if (empType == "commission")
+	{
+		if (payRate < .03 || payRate > .05) throw 10;
+
+		e = new Commission(empType, id, payRate, name);
+	}
+		
+	else
+	{
+		throw 10;
 	}
 
 	e->setTerminated(terminated);
@@ -99,16 +87,16 @@ Employee* EmployeeFactory::buildEmployeeFromDaily(string str, int date)
 {
     // comma delimited
     // line format: id, name, type, payRate
-    // todo : add DailyTransaction files as dependencies in makefile
 
-	myStr = str;
+    int id = parseInt(",", str);
+	str = advance(",", str);
+	string name = parseString(",", str);
+	str = advance(",", str);
+    string empType = parseString(",", str);
+	str = advance(",", str);
+    double payRate = stod(str);
 
-    int id = parseInt(",");
-	string name = parseString(",");
-    string empType = parseString(",");
-    double payRate = stod(myStr)
-
-	return constructEmployee(id, name, emptype, payRate, -1, 0, 1, date);
+	return constructEmployee(id, name, empType, payRate, -1, 0, 1, date);
 }
 
 
@@ -118,23 +106,28 @@ Employee* EmployeeFactory::buildEmployeeFromMaster(string str)
     // line format: TYPE id payRate payAmount terminated [numDaysWOrked] name
 
     // Declare dfields
-	myStr = str;
     int numConsecutive = 1;
 
-    string empType = parseString(" ");
-    int id = parseInt(" ");
-    double payRate = parseDouble(" ");
-    double payAmount = parseDouble(" ");
-    int terminated = parseInt(" ");
+    string empType = parseString(" ", str);
+	str = advance(" ", str);
+    int id = parseInt(" ", str);
+	str = advance(" ", str);
+    double payRate = parseDouble(" ", str);
+	str = advance(" ", str);
+    double payAmount = parseDouble(" ", str);
+	str = advance(" ", str);
+    int terminated = parseInt(" ", str);
+	str = advance(" ", str);
 
     if (empType == "hourly")
     {
-        numConsecutive = parseInt(" ");
+        numConsecutive = parseInt(" ", str);
+		str = advance(" ", str);
     }
     
-    name = myStr;
+    string name = str;
 
-    return constructEmployee(id, name, emptype, payRate, payAmount, terminated, numConsecutive, 1);
+    return constructEmployee(id, name, empType, payRate, payAmount, terminated, numConsecutive, 1);
 
 }
 

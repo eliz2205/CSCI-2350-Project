@@ -18,7 +18,6 @@ Hourly::Hourly(string employeeType, int id, double payRate, string name, int las
 	this->lastDayWorked = lastDayWorked;
 	this->numConsecutive = numConsecutive;
 
-    cout << "In hourly" << endl;
 }
 
 Hourly::~Hourly()

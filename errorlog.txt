@@ -1,0 +1,5 @@
+duplicate employee on line 2 In File DailyTransaction/1DailyTransaction.txt
+duplicate employee on line 3 In File DailyTransaction/1DailyTransaction.txt
+duplicate employee on line 4 In File DailyTransaction/1DailyTransaction.txt
+duplicate employee on line 5 In File DailyTransaction/1DailyTransaction.txt
+Invalid input on line 7 In File DailyTransaction/1DailyTransaction.txt

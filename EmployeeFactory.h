@@ -9,13 +9,20 @@
 class EmployeeFactory
 {
 private:
-	string myStr;
+
+	// Helper methods
+	static int parseInt(string, string);
+	static double parseDouble(string,string);
+	static string parseString(string,string);
+	static string advance(string,string);
+	static Employee* constructEmployee(int,string,string,double,double,bool,int,int);
 
 public:
     // line: ID, type, payRate, name
-    static Employee* buildEmployee(string, int);
+    static Employee* buildEmployeeFromDaily(string, int);
 
-    static Employee* insertEmployee(string);
+    static Employee* buildEmployeeFromMaster(string);
+
 };
 
 #endif

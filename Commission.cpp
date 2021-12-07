@@ -16,8 +16,6 @@ Commission::Commission(string employeeType, int id, double payRate, string name)
 	this->terminated = false;
 
 	this->sales = 0;
-
-    cout << "In commission" << endl;
 }
 
 Commission::~Commission()
